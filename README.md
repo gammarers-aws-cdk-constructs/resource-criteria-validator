@@ -16,6 +16,13 @@ Helpers for CDK construct resource criteria. Validate tag key/value criteria and
 - Reject empty or whitespace-only strings and string lists
 - Include a property path in thrown `Error` messages
 
+## How it works
+
+Pass tag criteria to `ResourceCriteriaValidator` before using it.
+
+- `assertTagCriteria` checks one criteria object. A blank `tagKey`, or an empty or blank `tagValues` list, throws `Error`. The message includes the property path.
+- `resolveTagCriteria` checks a list. An empty list throws before any entry is checked. Each entry is validated, then `tagKey` values must be unique by exact match, including surrounding spaces. A valid list returns a copy. The input list is left unchanged.
+
 ## Installation
 
 ### npm
@@ -77,7 +84,7 @@ ResourceCriteriaValidator.resolveTagCriteria(criteriaList, {
 
 | Option | Type | Description |
 | --- | --- | --- |
-| `propPath` | `string` | Property path included in the error message. A single object uses a path such as `tagCriteria`. A list uses a path such as `props.tags` (default: `tagCriteria`) |
+| `propPath` | `string` | Property path included in the error message. A single object uses a path such as `tagCriteria`. A list uses a path such as `props.tags`, and errors index entries as `props.tags[0]` (default: `tagCriteria`) |
 
 ## API
 
