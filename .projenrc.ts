@@ -17,6 +17,6 @@ const project = new ProjenCdkConstructLibrary({
     'criteria',
   ],
   releaseToNpm: true,
-  // npmTrustedPublishing: true,
+  npmTrustedPublishing: true,
 });
 project.synth();
