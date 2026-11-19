@@ -1,9 +1,11 @@
-# Construct Resource Criteria
+# Resource Criteria Validator (CDK v2)
 
-[![npm version](https://img.shields.io/npm/v/construct-resource-criteria?style=flat-square)](https://www.npmjs.com/package/construct-resource-criteria)
-[![license](https://img.shields.io/npm/l/construct-resource-criteria?style=flat-square)](https://www.npmjs.com/package/construct-resource-criteria)
-[![Node.js](https://img.shields.io/node/v/construct-resource-criteria?style=flat-square)](https://www.npmjs.com/package/construct-resource-criteria)
-[![build](https://img.shields.io/github/actions/workflow/status/gammarers-jsii-libs/construct-resource-criteria/build.yml?label=build&style=flat-square)](https://github.com/gammarers-jsii-libs/construct-resource-criteria/actions/workflows/build.yml)
+[![npm version](https://img.shields.io/npm/v/resource-criteria-validator?style=flat-square)](https://www.npmjs.com/package/resource-criteria-validator)
+[![license](https://img.shields.io/npm/l/resource-criteria-validator?style=flat-square)](https://www.npmjs.com/package/resource-criteria-validator)
+[![Node.js](https://img.shields.io/node/v/resource-criteria-validator?style=flat-square)](https://www.npmjs.com/package/resource-criteria-validator)
+[![build](https://img.shields.io/github/actions/workflow/status/gammarers-aws-cdk-constructs/resource-criteria-validator/build.yml?label=build&style=flat-square)](https://github.com/gammarers-aws-cdk-constructs/resource-criteria-validator/actions/workflows/build.yml)
+
+[![View on Construct Hub](https://constructs.dev/badge?package=resource-criteria-validator)](https://constructs.dev/packages/resource-criteria-validator)
 
 Helpers for CDK construct resource criteria. Validate tag key/value criteria and reject blank strings in property paths.
 
@@ -14,41 +16,48 @@ Helpers for CDK construct resource criteria. Validate tag key/value criteria and
 - Reject empty or whitespace-only strings and string lists
 - Include a property path in thrown `Error` messages
 
+## How it works
+
+Pass tag criteria to `ResourceCriteriaValidator` before using it.
+
+- `assertTagCriteria` checks one criteria object. A blank `tagKey`, or an empty or blank `tagValues` list, throws `Error`. The message includes the property path.
+- `resolveTagCriteria` checks a list. An empty list throws before any entry is checked. Each entry is validated, then `tagKey` values must be unique by exact match, including surrounding spaces. A valid list returns a copy. The input list is left unchanged.
+
 ## Installation
 
 ### npm
 
 ```bash
-npm install construct-resource-criteria
+npm install resource-criteria-validator
 ```
 
 ### yarn
 
 ```bash
-yarn add construct-resource-criteria
+yarn add resource-criteria-validator
 ```
 
 ### pnpm
 
 ```bash
-pnpm add construct-resource-criteria
+pnpm add resource-criteria-validator
 ```
 
 ## Usage
 
 ```typescript
 import {
-  ConstructResourceCriteria,
+  ResourceCriteriaValidator,
   ConstructResourceTagCriteria,
-} from 'construct-resource-criteria';
+} from 'resource-criteria-validator';
 
 const criteria: ConstructResourceTagCriteria = {
   tagKey: 'Environment',
   tagValues: ['production'],
 };
 
-ConstructResourceCriteria.assertTagCriteria(criteria);
-ConstructResourceCriteria.assertTagCriteria(criteria, {
+ResourceCriteriaValidator.assertTagCriteria(criteria);
+ResourceCriteriaValidator.assertTagCriteria(criteria, {
   propPath: 'props.tagCriteria',
 });
 
@@ -63,8 +72,8 @@ const criteriaList: ConstructResourceTagCriteria[] = [
   },
 ];
 
-const resolved = ConstructResourceCriteria.resolveTagCriteria(criteriaList);
-ConstructResourceCriteria.resolveTagCriteria(criteriaList, {
+const resolved = ResourceCriteriaValidator.resolveTagCriteria(criteriaList);
+ResourceCriteriaValidator.resolveTagCriteria(criteriaList, {
   propPath: 'props.tags',
 });
 ```
@@ -75,7 +84,7 @@ ConstructResourceCriteria.resolveTagCriteria(criteriaList, {
 
 | Option | Type | Description |
 | --- | --- | --- |
-| `propPath` | `string` | Property path included in the error message. A single object uses a path such as `tagCriteria`. A list uses a path such as `props.tags` (default: `tagCriteria`) |
+| `propPath` | `string` | Property path included in the error message. A single object uses a path such as `tagCriteria`. A list uses a path such as `props.tags`, and errors index entries as `props.tags[0]` (default: `tagCriteria`) |
 
 ## API
 
@@ -84,7 +93,8 @@ See [API.md](./API.md).
 ## Requirements
 
 - Node.js `>= 20.0.0`
-- `aws-cdk-lib` `^2`
+- `aws-cdk-lib` `^2.232.0`
+- `constructs` `^10.5.1`
 
 ## License
 

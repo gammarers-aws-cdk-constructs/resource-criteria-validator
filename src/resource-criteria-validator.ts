@@ -1,4 +1,7 @@
-import { CriteriaAssert } from './criteria-assert';
+import { AT_LEAST_ONE_VALUE_MESSAGE, CriteriaAssert } from './criteria-assert';
+
+/** Property path used when the caller omits `propPath`. */
+const DEFAULT_PROP_PATH = 'tagCriteria';
 
 /**
  * Tag key/value criteria used to match resources.
@@ -17,7 +20,7 @@ export interface ConstructResourceTagCriteria {
 }
 
 /**
- * Options for {@link ConstructResourceCriteria} assertion helpers.
+ * Options for {@link ResourceCriteriaValidator} assertion helpers.
  */
 export interface ConstructResourceCriteriaAssertOptions {
   /**
@@ -34,7 +37,7 @@ export interface ConstructResourceCriteriaAssertOptions {
 /**
  * Helpers for construct resource criteria.
  */
-export class ConstructResourceCriteria {
+export class ResourceCriteriaValidator {
   /**
    * Throws if `criteria` has a blank tag key or an empty/blank tag value list.
    *
@@ -46,7 +49,7 @@ export class ConstructResourceCriteria {
     criteria: ConstructResourceTagCriteria,
     options: ConstructResourceCriteriaAssertOptions = {},
   ): void {
-    const propPath = options.propPath ?? 'tagCriteria';
+    const propPath = options.propPath ?? DEFAULT_PROP_PATH;
 
     CriteriaAssert.nonBlankString(criteria.tagKey, {
       propPath: `${propPath}.tagKey`,
@@ -60,7 +63,7 @@ export class ConstructResourceCriteria {
    * Validates a tag criteria list and returns a copy.
    *
    * Rejects an empty list. Each entry is validated with
-   * {@link ConstructResourceCriteria.assertTagCriteria} before `tagKey` uniqueness
+   * {@link ResourceCriteriaValidator.assertTagCriteria} before `tagKey` uniqueness
    * is checked. `tagKey` values must be unique by exact match, without trimming.
    * The result is a new array of new objects, each with a new `tagValues` array.
    * The input list is left unchanged.
@@ -74,11 +77,11 @@ export class ConstructResourceCriteria {
     criteria: ConstructResourceTagCriteria[],
     options: ConstructResourceCriteriaAssertOptions = {},
   ): ConstructResourceTagCriteria[] {
-    const propPath = options.propPath ?? 'tagCriteria';
+    const propPath = options.propPath ?? DEFAULT_PROP_PATH;
 
     // An empty list is a list error. Per-entry checks never run.
     if (criteria.length === 0) {
-      throw new Error(`${propPath} must contain at least one value.`);
+      throw new Error(`${propPath} ${AT_LEAST_ONE_VALUE_MESSAGE}`);
     }
 
     const seenTagKeys = new Set<string>();
@@ -86,7 +89,7 @@ export class ConstructResourceCriteria {
 
     for (const [index, entry] of criteria.entries()) {
       // Field errors win over a duplicate key on the same entry.
-      ConstructResourceCriteria.assertTagCriteria(entry, {
+      ResourceCriteriaValidator.assertTagCriteria(entry, {
         propPath: `${propPath}[${index}]`,
       });
 

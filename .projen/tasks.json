@@ -116,7 +116,7 @@
         {
           "execArgs": [
             "jsii-diff",
-            "npm:construct-resource-criteria",
+            "npm:resource-criteria-validator",
             "-k",
             "--ignore-file",
             ".compatignore"
@@ -310,7 +310,10 @@
             "--passWithNoTests",
             "--updateSnapshot"
           ],
-          "receiveArgs": true
+          "receiveArgs": true,
+          "env": {
+            "NODE_OPTIONS": "--experimental-vm-modules"
+          }
         },
         {
           "spawn": "eslint"
@@ -325,7 +328,10 @@
           "execArgs": [
             "jest",
             "--watch"
-          ]
+          ],
+          "env": {
+            "NODE_OPTIONS": "--experimental-vm-modules"
+          }
         }
       ]
     },
@@ -379,7 +385,6 @@
             "@typescript-eslint/eslint-plugin",
             "@typescript-eslint/parser",
             "commit-and-tag-version",
-            "constructs",
             "eslint-import-resolver-typescript",
             "eslint-plugin-import",
             "eslint",
@@ -394,7 +399,8 @@
             "ts-jest",
             "ts-node",
             "typescript",
-            "aws-cdk-lib"
+            "aws-cdk-lib",
+            "constructs"
           ]
         },
         {

@@ -1,15 +1,13 @@
-import { ProjenJsiiProject } from '@gammarers/projen-projects';
-const project = new ProjenJsiiProject({
-  name: 'construct-resource-criteria',
+import { ProjenCdkConstructLibrary } from '@gammarers/projen-projects';
+const project = new ProjenCdkConstructLibrary({
+  name: 'resource-criteria-validator',
   description:
     'Helpers for CDK construct resource criteria, including ConstructResourceTagCriteria validation.',
   projenrcTs: true,
-  repositoryUrl: 'https://github.com/gammarers-jsii-libs/construct-resource-criteria.git',
-  deps: [
-    'aws-cdk-lib@^2.232.0',
-  ],
+  repositoryUrl: 'https://github.com/gammarers-aws-cdk-constructs/resource-criteria-validator.git',
+  cdkVersion: '2.232.0',
   devDeps: [
-    '@gammarers/projen-projects@^0.8.0',
+    '@gammarers/projen-projects@^0.8.1',
   ],
   keywords: [
     'aws',
@@ -19,6 +17,6 @@ const project = new ProjenJsiiProject({
     'criteria',
   ],
   releaseToNpm: true,
-  npmTrustedPublishing: true,
+  // npmTrustedPublishing: true,
 });
 project.synth();

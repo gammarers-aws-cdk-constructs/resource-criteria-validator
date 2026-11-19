@@ -14,6 +14,9 @@ interface CriteriaAssertPropOptions {
 const isBlankText = (value: string): boolean =>
   !Token.isUnresolved(value) && value.trim().length === 0;
 
+/** Sentence used when a list has no entries. The property path is prefixed by the caller. */
+export const AT_LEAST_ONE_VALUE_MESSAGE = 'must contain at least one value.';
+
 /**
  * Internal assertion helpers for non-blank strings and string lists.
  *
@@ -48,7 +51,7 @@ export class CriteriaAssert {
     options: CriteriaAssertPropOptions,
   ): void {
     if (values.length === 0) {
-      throw new Error(`${options.propPath} must contain at least one value.`);
+      throw new Error(`${options.propPath} ${AT_LEAST_ONE_VALUE_MESSAGE}`);
     }
 
     for (const value of values) {
