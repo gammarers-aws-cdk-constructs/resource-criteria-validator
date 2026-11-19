@@ -1,4 +1,7 @@
-import { CriteriaAssert } from './criteria-assert';
+import { AT_LEAST_ONE_VALUE_MESSAGE, CriteriaAssert } from './criteria-assert';
+
+/** Property path used when the caller omits `propPath`. */
+const DEFAULT_PROP_PATH = 'tagCriteria';
 
 /**
  * Tag key/value criteria used to match resources.
@@ -46,7 +49,7 @@ export class ResourceCriteriaValidator {
     criteria: ConstructResourceTagCriteria,
     options: ConstructResourceCriteriaAssertOptions = {},
   ): void {
-    const propPath = options.propPath ?? 'tagCriteria';
+    const propPath = options.propPath ?? DEFAULT_PROP_PATH;
 
     CriteriaAssert.nonBlankString(criteria.tagKey, {
       propPath: `${propPath}.tagKey`,
@@ -74,11 +77,11 @@ export class ResourceCriteriaValidator {
     criteria: ConstructResourceTagCriteria[],
     options: ConstructResourceCriteriaAssertOptions = {},
   ): ConstructResourceTagCriteria[] {
-    const propPath = options.propPath ?? 'tagCriteria';
+    const propPath = options.propPath ?? DEFAULT_PROP_PATH;
 
     // An empty list is a list error. Per-entry checks never run.
     if (criteria.length === 0) {
-      throw new Error(`${propPath} must contain at least one value.`);
+      throw new Error(`${propPath} ${AT_LEAST_ONE_VALUE_MESSAGE}`);
     }
 
     const seenTagKeys = new Set<string>();
