@@ -1,9 +1,11 @@
-# Construct Resource Criteria
+# Resource Criteria Validator (CDK v2)
 
-[![npm version](https://img.shields.io/npm/v/construct-resource-criteria?style=flat-square)](https://www.npmjs.com/package/construct-resource-criteria)
-[![license](https://img.shields.io/npm/l/construct-resource-criteria?style=flat-square)](https://www.npmjs.com/package/construct-resource-criteria)
-[![Node.js](https://img.shields.io/node/v/construct-resource-criteria?style=flat-square)](https://www.npmjs.com/package/construct-resource-criteria)
-[![build](https://img.shields.io/github/actions/workflow/status/gammarers-jsii-libs/construct-resource-criteria/build.yml?label=build&style=flat-square)](https://github.com/gammarers-jsii-libs/construct-resource-criteria/actions/workflows/build.yml)
+[![npm version](https://img.shields.io/npm/v/resource-criteria-validator?style=flat-square)](https://www.npmjs.com/package/resource-criteria-validator)
+[![license](https://img.shields.io/npm/l/resource-criteria-validator?style=flat-square)](https://www.npmjs.com/package/resource-criteria-validator)
+[![Node.js](https://img.shields.io/node/v/resource-criteria-validator?style=flat-square)](https://www.npmjs.com/package/resource-criteria-validator)
+[![build](https://img.shields.io/github/actions/workflow/status/gammarers-aws-cdk-constructs/resource-criteria-validator/build.yml?label=build&style=flat-square)](https://github.com/gammarers-aws-cdk-constructs/resource-criteria-validator/actions/workflows/build.yml)
+
+[![View on Construct Hub](https://constructs.dev/badge?package=resource-criteria-validator)](https://constructs.dev/packages/resource-criteria-validator)
 
 Helpers for CDK construct resource criteria. Validate tag key/value criteria and reject blank strings in property paths.
 
@@ -19,36 +21,36 @@ Helpers for CDK construct resource criteria. Validate tag key/value criteria and
 ### npm
 
 ```bash
-npm install construct-resource-criteria
+npm install resource-criteria-validator
 ```
 
 ### yarn
 
 ```bash
-yarn add construct-resource-criteria
+yarn add resource-criteria-validator
 ```
 
 ### pnpm
 
 ```bash
-pnpm add construct-resource-criteria
+pnpm add resource-criteria-validator
 ```
 
 ## Usage
 
 ```typescript
 import {
-  ConstructResourceCriteria,
+  ResourceCriteriaValidator,
   ConstructResourceTagCriteria,
-} from 'construct-resource-criteria';
+} from 'resource-criteria-validator';
 
 const criteria: ConstructResourceTagCriteria = {
   tagKey: 'Environment',
   tagValues: ['production'],
 };
 
-ConstructResourceCriteria.assertTagCriteria(criteria);
-ConstructResourceCriteria.assertTagCriteria(criteria, {
+ResourceCriteriaValidator.assertTagCriteria(criteria);
+ResourceCriteriaValidator.assertTagCriteria(criteria, {
   propPath: 'props.tagCriteria',
 });
 
@@ -63,8 +65,8 @@ const criteriaList: ConstructResourceTagCriteria[] = [
   },
 ];
 
-const resolved = ConstructResourceCriteria.resolveTagCriteria(criteriaList);
-ConstructResourceCriteria.resolveTagCriteria(criteriaList, {
+const resolved = ResourceCriteriaValidator.resolveTagCriteria(criteriaList);
+ResourceCriteriaValidator.resolveTagCriteria(criteriaList, {
   propPath: 'props.tags',
 });
 ```
@@ -84,7 +86,8 @@ See [API.md](./API.md).
 ## Requirements
 
 - Node.js `>= 20.0.0`
-- `aws-cdk-lib` `^2`
+- `aws-cdk-lib` `^2.232.0`
+- `constructs` `^10.5.1`
 
 ## License
 

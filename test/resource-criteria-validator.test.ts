@@ -1,5 +1,5 @@
 import {
-  ConstructResourceCriteria,
+  ResourceCriteriaValidator,
   ConstructResourceTagCriteria,
 } from '../src';
 
@@ -8,16 +8,16 @@ const validCriteria: ConstructResourceTagCriteria = {
   tagValues: ['production'],
 };
 
-describe('ConstructResourceCriteria.assertTagCriteria', () => {
+describe('ResourceCriteriaValidator.assertTagCriteria', () => {
   it('accepts valid criteria with the default propPath', () => {
     expect(() =>
-      ConstructResourceCriteria.assertTagCriteria(validCriteria),
+      ResourceCriteriaValidator.assertTagCriteria(validCriteria),
     ).not.toThrow();
   });
 
   it('accepts valid criteria with a custom propPath', () => {
     expect(() =>
-      ConstructResourceCriteria.assertTagCriteria(validCriteria, {
+      ResourceCriteriaValidator.assertTagCriteria(validCriteria, {
         propPath: 'props.tagCriteria',
       }),
     ).not.toThrow();
@@ -28,7 +28,7 @@ describe('ConstructResourceCriteria.assertTagCriteria', () => {
     ['whitespace-only', '   '],
   ])('rejects a %s tagKey', (_label, tagKey) => {
     expect(() =>
-      ConstructResourceCriteria.assertTagCriteria(
+      ResourceCriteriaValidator.assertTagCriteria(
         { tagKey, tagValues: ['YES'] },
         { propPath: 'props.tagCriteria' },
       ),
@@ -37,7 +37,7 @@ describe('ConstructResourceCriteria.assertTagCriteria', () => {
 
   it('rejects an empty tagValues list', () => {
     expect(() =>
-      ConstructResourceCriteria.assertTagCriteria(
+      ResourceCriteriaValidator.assertTagCriteria(
         { tagKey: 'Environment', tagValues: [] },
         { propPath: 'props.tagCriteria' },
       ),
@@ -49,7 +49,7 @@ describe('ConstructResourceCriteria.assertTagCriteria', () => {
     ['whitespace-only element', ['  ']],
   ])('rejects tagValues with a %s', (_label, tagValues) => {
     expect(() =>
-      ConstructResourceCriteria.assertTagCriteria(
+      ResourceCriteriaValidator.assertTagCriteria(
         { tagKey: 'Environment', tagValues },
         { propPath: 'props.tagCriteria' },
       ),
@@ -58,7 +58,7 @@ describe('ConstructResourceCriteria.assertTagCriteria', () => {
 
   it('uses tagCriteria as the default propPath in errors', () => {
     expect(() =>
-      ConstructResourceCriteria.assertTagCriteria({
+      ResourceCriteriaValidator.assertTagCriteria({
         tagKey: '',
         tagValues: ['YES'],
       }),
@@ -66,7 +66,7 @@ describe('ConstructResourceCriteria.assertTagCriteria', () => {
   });
 });
 
-describe('ConstructResourceCriteria.resolveTagCriteria', () => {
+describe('ResourceCriteriaValidator.resolveTagCriteria', () => {
   const pipelineOptions = { propPath: 'targetPipeline.tags' };
 
   it('returns an equivalent copy and leaves the input unchanged', () => {
@@ -79,7 +79,7 @@ describe('ConstructResourceCriteria.resolveTagCriteria', () => {
       { tagKey: 'Notify', tagValues: ['YES'] },
     ];
 
-    const result = ConstructResourceCriteria.resolveTagCriteria(input);
+    const result = ResourceCriteriaValidator.resolveTagCriteria(input);
 
     expect(result).toEqual(snapshot);
     expect(result).not.toBe(input);
@@ -98,7 +98,7 @@ describe('ConstructResourceCriteria.resolveTagCriteria', () => {
       { tagKey: 'Environment ', tagValues: ['staging'] },
     ];
 
-    expect(ConstructResourceCriteria.resolveTagCriteria(input)).toEqual(input);
+    expect(ResourceCriteriaValidator.resolveTagCriteria(input)).toEqual(input);
   });
 
   it.each([
@@ -106,7 +106,7 @@ describe('ConstructResourceCriteria.resolveTagCriteria', () => {
     ['props.tags', { propPath: 'props.tags' }, 'props.tags must contain at least one value.'],
     ['targetPipeline.tags', pipelineOptions, 'targetPipeline.tags must contain at least one value.'],
   ])('rejects an empty list for %s', (_label, options, message) => {
-    expect(() => ConstructResourceCriteria.resolveTagCriteria([], options)).toThrow(message);
+    expect(() => ResourceCriteriaValidator.resolveTagCriteria([], options)).toThrow(message);
   });
 
   it.each([
@@ -135,13 +135,13 @@ describe('ConstructResourceCriteria.resolveTagCriteria', () => {
     ],
   ])('rejects %s', (_label, criteria, message) => {
     expect(() =>
-      ConstructResourceCriteria.resolveTagCriteria(criteria, pipelineOptions),
+      ResourceCriteriaValidator.resolveTagCriteria(criteria, pipelineOptions),
     ).toThrow(message);
   });
 
   it('rejects an invalid entry before a duplicate tagKey', () => {
     expect(() =>
-      ConstructResourceCriteria.resolveTagCriteria([
+      ResourceCriteriaValidator.resolveTagCriteria([
         { tagKey: 'Notify', tagValues: ['YES'] },
         { tagKey: 'Notify', tagValues: [] },
       ]),
@@ -153,7 +153,7 @@ describe('ConstructResourceCriteria.resolveTagCriteria', () => {
     ['targetPipeline.tags', pipelineOptions, 'targetPipeline.tags contains duplicate tagKey: Notify'],
   ])('rejects a duplicate tagKey for %s', (_label, options, message) => {
     expect(() =>
-      ConstructResourceCriteria.resolveTagCriteria(
+      ResourceCriteriaValidator.resolveTagCriteria(
         [
           { tagKey: 'Notify', tagValues: ['YES'] },
           { tagKey: 'Environment', tagValues: ['production'] },

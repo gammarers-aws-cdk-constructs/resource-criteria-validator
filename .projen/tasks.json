@@ -116,7 +116,7 @@
         {
           "execArgs": [
             "jsii-diff",
-            "npm:construct-resource-criteria",
+            "npm:resource-criteria-validator",
             "-k",
             "--ignore-file",
             ".compatignore"
@@ -379,7 +379,6 @@
             "@typescript-eslint/eslint-plugin",
             "@typescript-eslint/parser",
             "commit-and-tag-version",
-            "constructs",
             "eslint-import-resolver-typescript",
             "eslint-plugin-import",
             "eslint",
@@ -394,7 +393,8 @@
             "ts-jest",
             "ts-node",
             "typescript",
-            "aws-cdk-lib"
+            "aws-cdk-lib",
+            "constructs"
           ]
         },
         {

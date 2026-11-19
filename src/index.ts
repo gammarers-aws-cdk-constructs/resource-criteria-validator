@@ -1,1 +1,1 @@
-export * from './construct-resource-criteria';
+export * from './resource-criteria-validator';
